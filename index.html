@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>~*~ MOUSE SURVIVORS RAVE CAVE ~*~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <style>
         body {
             /* Tiled background with RAINBOW overlay */
@@ -9,10 +11,10 @@
             background-color: #0000ff;
             color: #00ff00;
             font-family: "Comic Sans MS", cursive, sans-serif;
-            cursor: url('https://cur.cursors-4u.net/ani/ani-1/ani1.ani'), auto;
-            /* The Flying Colors Animation */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
             animation: rainbow-flash 5s infinite;
-            overflow-x: hidden; /* Hide the flying pizzas when they go off screen */
         }
 
         /* FLYING COLORS ANIMATION */
@@ -24,118 +26,132 @@
             100% {background-color: #0000ff;}
         }
 
+        /* Responsive Images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
         .marquee-container {
             background: #ff00ff;
             color: white;
             padding: 10px;
             font-weight: bold;
-            border: 5px ridge #00ffff;
+            border-bottom: 5px ridge #00ffff;
+            border-top: 5px ridge #00ffff;
         }
 
+        /* FLEXIBLE DANCE FLOOR */
         .dance-floor {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap; /* Allows more mice to fit */
-            gap: 30px;
-            margin-top: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            min-height: 300px;
         }
 
         .mouse-container {
             text-align: center;
             z-index: 10;
+            flex: 0 1 45%; /* Two per row on mobile */
         }
 
-        .mouse {
-            width: 150px;
+        /* MOUSE STYLES */
+        .mouse-img {
+            height: 150px; /* Fixed height for consistency */
+            width: auto;
+            max-width: 90%;
             filter: drop-shadow(5px 5px 0px #ff00ff);
-            animation: bounce 0.5s infinite alternate;
         }
 
-        /* EVIL TWIN MOUSE (Inverted colors) */
-        .mouse-evil {
-            width: 150px;
-            filter: invert(1) drop-shadow(5px 5px 0px #000000);
-            animation: shake 0.2s infinite;
+        /* Animation Variants */
+        .dance-1 { animation: bounce 0.6s infinite alternate; }
+        .dance-2 { animation: shake 0.3s infinite; }
+        .dance-3 { animation: spin-wiggle 1s infinite linear; }
+        
+        /* Evil Mouse Style */
+        .evil-filter {
+            filter: invert(1) hue-rotate(180deg) drop-shadow(5px 5px 0px #000000);
         }
 
-        /* GHOST MOUSE (See-through) */
-        .mouse-ghost {
-            width: 150px;
-            opacity: 0.7;
-            filter: hue-rotate(90deg) drop-shadow(5px 5px 0px #ffff00);
-            animation: bounce 0.8s infinite alternate-reverse;
-        }
-
-        /* PIZZA STYLES */
+        /* PIZZA ZONES */
         .pizza-zone {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Let you click through them */
+            pointer-events: none;
             z-index: 1;
         }
 
         .flying-pizza {
             position: absolute;
-            width: 80px;
+            width: 70px;
         }
 
-        /* ANIMATIONS */
+        /* KEYFRAME ANIMATIONS */
         @keyframes bounce {
-            from { transform: translateY(0px) rotate(0deg); }
-            to { transform: translateY(-30px) rotate(10deg); }
+            from { transform: translateY(0px); }
+            to { transform: translateY(-20px); }
         }
 
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
+            50% { transform: translate(-1px, -2px) rotate(-5deg); }
+            100% { transform: translate(1px, -1px) rotate(5deg); }
+        }
+
+        @keyframes spin-wiggle {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
         @keyframes fly-diagonal {
-            0% { top: -100px; left: -100px; transform: rotate(0deg); }
-            100% { top: 110%; left: 110%; transform: rotate(720deg); }
+            0% { top: -10%; left: -10%; transform: rotate(0deg); }
+            100% { top: 110%; left: 110%; transform: rotate(360deg); }
         }
 
         @keyframes fly-reverse {
-            0% { top: -100px; right: -100px; transform: rotate(0deg); }
-            100% { top: 110%; right: 110%; transform: rotate(-720deg); }
+            0% { top: -10%; right: -10%; transform: rotate(0deg); }
+            100% { top: 110%; right: 110%; transform: rotate(-360deg); }
+        }
+
+        @keyframes float-center {
+            0% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) translateY(-50px) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
         }
 
         .blink {
-            animation: blinker 0.5s linear infinite; /* Faster blinking! */
+            animation: blinker 0.3s linear infinite;
             color: yellow;
-            font-size: 24px;
+            font-size: 1.5rem;
             text-align: center;
             text-shadow: 2px 2px #ff0000;
+            margin-top: 30px;
         }
 
         @keyframes blinker { 50% { opacity: 0; } }
 
-        .under-construction {
-            display: block;
-            margin: 20px auto;
-            width: 200px;
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .mouse-img { height: 100px; }
         }
     </style>
 </head>
 <body>
 
     <div class="pizza-zone">
-        <img src="https://media.giphy.com/media/3o7btXkbsV26U95Uly/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 6s linear infinite;">
-        <img src="https://media.giphy.com/media/3o7btXkbsV26U95Uly/giphy.gif" class="flying-pizza" style="animation: fly-reverse 7s linear infinite; width: 120px;">
-        <img src="https://media.giphy.com/media/1108D2tVaUN3eo/giphy.gif" class="flying-pizza" style="top: 50%; left: 50%; animation: spin 3s linear infinite;">
+        <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
+        
+        <img src="https://media.giphy.com/media/1108D2tVaUN3eo/giphy.gif" class="flying-pizza" style="top: 50%; left: 50%; width: 100px; animation: float-center 4s ease-in-out infinite;">
+        
+        <img src="https://media.giphy.com/media/eccZTdMZtUjfy/giphy.gif" class="flying-pizza" style="animation: fly-reverse 6s linear infinite;">
     </div>
 
     <div class="marquee-container">
@@ -149,34 +165,33 @@
     <div class="dance-floor">
         
         <div class="mouse-container">
-            <img src="https://media.giphy.com/media/3o7TKMGpxxWpYJ0u64/giphy.gif" class="mouse">
+            <img src="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" class="mouse-img dance-1">
             <p align="center" style="background: black;"><b>STITCH</b></p>
         </div>
         
         <div class="mouse-container">
-            <img src="https://media.giphy.com/media/3o7TKMGpxxWpYJ0u64/giphy.gif" class="mouse" style="animation-delay: 0.2s; transform: scaleX(-1);">
+            <img src="https://media.giphy.com/media/DebhXJUVWmyNDTt8Lv/giphy.gif" class="mouse-img dance-3">
             <p align="center" style="background: black;"><b>PATCH</b></p>
         </div>
 
         <div class="mouse-container">
-            <img src="https://media.giphy.com/media/3o7TKMGpxxWpYJ0u64/giphy.gif" class="mouse-evil">
-            <p align="center" style="background: black;"><b>TWITCH (EVIL)</b></p>
+            <img src="https://media.giphy.com/media/zrksowazmCxTl4SKN4/giphy.gif" class="mouse-img dance-2 evil-filter">
+            <p align="center" style="background: black;"><b>TWITCH</b></p>
         </div>
 
         <div class="mouse-container">
-            <img src="https://media.giphy.com/media/l41lI4bYmcsPJX9Go/giphy.gif" class="mouse-ghost">
+            <img src="https://media.giphy.com/media/Xjpeb9rCEerhFUtZF0/giphy.gif" class="mouse-img dance-1" style="opacity: 0.8;">
             <p align="center" style="background: black;"><b>GLITCH</b></p>
         </div>
 
     </div>
 
-    <br><br>
-    <p class="blink">!!! WARNING: EXTREME VIBES IN PROGRESS !!!</p>
+    <p class="blink">!!! WARNING: EXTREME VIBES !!!</p>
 
     <center>
-        <img src="https://media.giphy.com/media/oSjA9HkUaVpIs/giphy.gif" class="under-construction">
+        <img src="https://media.giphy.com/media/oSjA9HkUaVpIs/giphy.gif" class="under-construction" style="width: 200px;">
         <br><br>
-        <img src="https://media.giphy.com/media/fVeAI9dyD5ssIFyOyM/giphy.gif" width="100">
+        <img src="https://media.giphy.com/media/fVeAI9dyD5ssIFyOyM/giphy.gif" width="80">
     </center>
 
     <embed src="https://www.worldofspectrum.org/pub/sinclair/music/midi/Techno.mid" autostart="true" loop="true" width="2" height="0">
