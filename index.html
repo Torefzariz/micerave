@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~*~ MOUSE SURVIVORS RAVE CAVE ~*~</title>
+    <style>
+        body {
+            /* Tiled background is essential */
+            background-image: url('https://www.transparenttextures.com/patterns/starry-night.png');
+            background-color: #0000ff; /* Eye-searing blue */
+            color: #00ff00; /* Matrix green text */
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            cursor: url('https://cur.cursors-4u.net/ani/ani-1/ani1.ani'), auto;
+        }
+
+        .marquee-container {
+            background: #ff00ff;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            border: 5px ridge #00ffff;
+        }
+
+        .dance-floor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        /* The "Dancing" animation */
+        .mouse {
+            width: 150px;
+            filter: drop-shadow(5px 5px 0px #ff00ff);
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px) rotate(0deg); }
+            to { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+            color: yellow;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .under-construction {
+            display: block;
+            margin: 20px auto;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <marquee scrollamount="15">!!! WELCOME TO THE SURVIVOR ZONE !!! WE BEAT THE ANESTHESIA !!! NO CATS ALLOWED !!!</marquee>
+    </div>
+
+    <h1 align="center"><u>~*~ The Mouse Duo Fan Club ~*~</u></h1>
+
+    <div class="dance-floor">
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzZ4bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/3o7TKMGpxxWpYJ0u64/giphy.gif" class="mouse">
+            <p align="center"><b>STITCH</b></p>
+        </div>
+        
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmZzZ4bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0bmR0JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1z/3o7TKMGpxxWpYJ0u64/giphy.gif" class="mouse" style="animation-delay: 0.2s; transform: scaleX(-1);">
+            <p align="center"><b>PATCH</b></p>
+        </div>
+    </div>
+
+    <p class="blink">STILL RECOVERING BUT STILL VIBING</p>
+
+    <center>
+        <img src="https://web.archive.org/web/20090830031154/http://geocities.com/Athens/Acropolis/2011/images/under_construction.gif" class="under-construction">
+        <br>
+        <img src="https://web.archive.org/web/20091023133649/http://geocities.com/CollegePark/6153/hitcount.gif">
+    </center>
+
+    <embed src="https://www.worldofspectrum.org/pub/sinclair/music/midi/Techno.mid" autostart="true" loop="true" width="2" height="0">
+
+</body>
+</html>
