@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>~*~ MOUSE SURVIVORS RAVE CAVE ~*~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link rel="icon" href="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" type="image/gif">
 
     <meta property="og:title" content="~*~ MOUSE SURVIVORS RAVE CAVE ~*~">
@@ -9,13 +11,7 @@
     <meta property="og:image" content="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif">
     <meta property="og:url" content="https://micerave.com">
     <meta property="og:type" content="website">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MOUSE RAVE">
-    <meta name="twitter:description" content="Join the survivors. Eat the pizza.">
-    <meta name="twitter:image" content="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <style>
         body {
             /* Tiled background with RAINBOW overlay */
@@ -70,15 +66,24 @@
             flex: 0 1 45%; /* Two per row on mobile */
         }
 
+        /* NEW: Neon Text Style (No black box!) */
+        .mouse-container p {
+            background: none !important;
+            text-shadow: 4px 4px 0px #000000; /* Heavy retro shadow */
+            font-size: 1.2rem;
+            margin-top: 5px;
+            font-weight: 900;
+        }
+
         /* MOUSE STYLES */
         .mouse-img {
-            height: 150px; /* Fixed height for consistency */
+            height: 150px;
             width: auto;
             max-width: 90%;
             filter: drop-shadow(5px 5px 0px #ff00ff);
         }
 
-        /* SPIKY BUTTON STYLES (NEW) */
+        /* SPIKY BUTTON STYLES */
         .warp-button-container {
             display: flex;
             justify-content: center;
@@ -97,16 +102,11 @@
             padding: 40px;
             text-align: center;
             line-height: 1.2;
-            
-            /* The Spiky Polygon Shape */
             clip-path: polygon(
                 20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 
                 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%
             );
-            
-            /* Fast Rainbow (1s) + Pulse */
             animation: rainbow-flash 1s infinite, pulse-scale 0.5s infinite alternate;
-            
             cursor: pointer;
             transition: transform 0.1s;
         }
@@ -125,7 +125,6 @@
         .dance-2 { animation: shake 0.3s infinite; }
         .dance-3 { animation: spin-wiggle 1s infinite linear; }
         
-        /* Evil Mouse Style */
         .evil-filter {
             filter: invert(1) hue-rotate(180deg) drop-shadow(5px 5px 0px #000000);
         }
@@ -202,9 +201,7 @@
 
     <div class="pizza-zone">
         <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
-        
         <img src="https://media.giphy.com/media/1108D2tVaUN3eo/giphy.gif" class="flying-pizza" style="top: 50%; left: 50%; width: 100px; animation: float-center 4s ease-in-out infinite;">
-        
         <img src="https://media.giphy.com/media/eccZTdMZtUjfy/giphy.gif" class="flying-pizza" style="animation: fly-reverse 6s linear infinite;">
     </div>
 
@@ -220,22 +217,22 @@
         
         <div class="mouse-container">
             <img src="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" class="mouse-img dance-1">
-            <p align="center" style="background: black;"><b>STITCH</b></p>
+            <p align="center"><b>STITCH</b></p>
         </div>
         
         <div class="mouse-container">
             <img src="https://media.giphy.com/media/DebhXJUVWmyNDTt8Lv/giphy.gif" class="mouse-img dance-3">
-            <p align="center" style="background: black;"><b>PATCH</b></p>
+            <p align="center"><b>PATCH</b></p>
         </div>
 
         <div class="mouse-container">
             <img src="https://media.giphy.com/media/zrksowazmCxTl4SKN4/giphy.gif" class="mouse-img dance-2 evil-filter">
-            <p align="center" style="background: black;"><b>TWITCH</b></p>
+            <p align="center"><b>TWITCH</b></p>
         </div>
 
         <div class="mouse-container">
             <img src="https://media.giphy.com/media/Xjpeb9rCEerhFUtZF0/giphy.gif" class="mouse-img dance-1" style="opacity: 0.8;">
-            <p align="center" style="background: black;"><b>GLITCH</b></p>
+            <p align="center"><b>GLITCH</b></p>
         </div>
 
     </div>
@@ -249,7 +246,7 @@
     <p class="blink">!!! WARNING: DON'T GET ATTACHED !!!</p>
 
     <center>
-        <img src="https://media.giphy.com/media/oSjA9HkUaVpIs/giphy.gif" class="under-construction" style="width: 200px;">
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExendkbnJraDhzeTh1Y3dsbGh0aXVlbnIwOHhpdGE5Y3g0bm00ZWhmeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nSAunccuFXmJignTVL/giphy.gif" class="under-construction" style="width: 200px;">
         <br><br>
         <img src="https://media.giphy.com/media/fVeAI9dyD5ssIFyOyM/giphy.gif" width="80">
     </center>
