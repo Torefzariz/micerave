@@ -66,10 +66,10 @@
             flex: 0 1 45%; /* Two per row on mobile */
         }
 
-        /* NEW: Neon Text Style (No black box!) */
+        /* Neon Text Style */
         .mouse-container p {
             background: none !important;
-            text-shadow: 4px 4px 0px #000000; /* Heavy retro shadow */
+            text-shadow: 4px 4px 0px #000000;
             font-size: 1.2rem;
             margin-top: 5px;
             font-weight: 900;
@@ -118,6 +118,28 @@
         @keyframes pulse-scale {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
+        }
+
+        /* HIDDEN EASTER EGG BUTTON (Top Left) */
+        .easter-egg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50px;  /* Size of the hidden zone */
+            height: 50px;
+            z-index: 9999; /* Sit on top of everything */
+            cursor: pointer;
+            
+            /* The requested animation */
+            background-color: #00ff00;
+            animation: rainbow-flash 5s infinite;
+            
+            /* Make it semi-transparent so it's "hidden" but visible if you look */
+            opacity: 0.5; 
+        }
+        
+        .easter-egg:hover {
+            opacity: 1; /* Fully visible on hover */
         }
 
         /* Animation Variants */
@@ -198,6 +220,8 @@
     </style>
 </head>
 <body>
+
+    <a href="secret.html" class="easter-egg"></a>
 
     <div class="pizza-zone">
         <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
