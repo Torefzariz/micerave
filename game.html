@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Chasing Mouse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrollbars */
+            cursor: none; /* Hide default cursor */
+            touch-action: none; /* Prevent scrolling on mobile while dragging */
+        }
+        
+        #cat {
+            position: absolute;
+            font-size: 5rem; /* Bigger cat */
+            user-select: none;
+            pointer-events: none; /* Let clicks pass through */
+            /* Start off-screen */
+            top: 0;
+            left: 0;
+            transform: translate(-100px, -100px);
+            z-index: 50;
+        }
+
+        #mouse-cursor {
+            position: absolute;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            z-index: 100; /* Above the cat */
+            transform: translate(-100px, -100px); /* Start off-screen */
+        }
+
+        .instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #94a3b8;
+            font-family: sans-serif;
+            text-align: center;
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 h-screen w-screen relative transition-colors duration-200">
+
+    <div id="instruction" class="instruction">
+        <h1 class="text-2xl font-light mb-2">Here kitty, kitty!</h1>
+        <p class="text-sm opacity-75">Move your mouse (or touch the screen)</p>
+        <br>
+        <a href="index.html" style="pointer-events: auto; text-decoration: underline; color: blue; cursor: pointer;">(Back to the Rave)</a>
+    </div>
+
+    <div id="cat" aria-hidden="true">🐱</div>
+    <div id="mouse-cursor" aria-hidden="true">🐭</div>
+
+    <script>
+        const cat = document.getElementById('cat');
+        const mouseCursor = document.getElementById('mouse-cursor');
+        const instruction = document.getElementById('instruction');
+
+        // Store original instruction content
+        const originalContent = instruction.innerHTML;
+        let isEating = false;
+        
+        // State variables
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let catX = window.innerWidth / 2;
+        let catY = window.innerHeight / 2;
+        
+        // Configuration
+        const speed = 0.05; // Slower speed
+
+        // Event Listeners for Mouse
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Event Listeners for Touch (Mobile)
+        document.addEventListener('touchmove', (e) => {
+            // Prevent default to stop scrolling
+            e.preventDefault(); 
+            if(e.touches.length > 0) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchstart', (e) => {
+            if(e.touches.length > 0) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+            }
+        });
+
+        // Animation Loop
+        function animate() {
+            // Calculate the distance needed to move (Linear Interpolation)
+            const distX = mouseX - catX;
+            const distY = mouseY - catY;
+
+            // Calculate actual distance for collision detection
+            const distance = Math.hypot(distX, distY);
+
+            // Move a fraction of the distance
+            catX += distX * speed;
+            catY += distY * speed;
+
+            // Collision Detection
+            // If distance is less than 60px (approx overlap size)
+            if (distance < 60) {
+                if (!isEating) {
+                    isEating = true;
+                    document.body.classList.remove('bg-slate-50');
+                    document.body.classList.add('bg-red-500');
+                    instruction.innerHTML = '<h1 class="text-6xl font-black text-white animate-pulse">NOM NOM NOM</h1>';
+                }
+            } else {
+                if (isEating) {
+                    isEating = false;
+                    document.body.classList.remove('bg-red-500');
+                    document.body.classList.add('bg-slate-50');
+                    instruction.innerHTML = originalContent;
+                }
+            }
+
+            // Update Cat Position
+            const catOffsetX = cat.offsetWidth / 2;
+            const catOffsetY = cat.offsetHeight / 2;
+            
+            // Cat rotation logic
+            const rotation = distX * 0.5;
+            const clampedRotation = Math.max(-20, Math.min(20, rotation));
+            
+            // FIXED: Added backticks below
+            cat.style.transform = `translate(${catX - catOffsetX}px, ${catY - catOffsetY}px) rotate(${clampedRotation}deg)`;
+
+            // Update Mouse Cursor Position (Instant)
+            // Center the mouse emoji on the actual cursor coordinates
+            const mouseOffsetX = mouseCursor.offsetWidth / 2;
+            const mouseOffsetY = mouseCursor.offsetHeight / 2;
+            
+            // FIXED: Added backticks below
+            mouseCursor.style.transform = `translate(${mouseX - mouseOffsetX}px, ${mouseY - mouseOffsetY}px)`;
+
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize size calculation after a brief delay to ensure rendering
+        setTimeout(() => {
+            animate();
+        }, 100);
+
+    </script>
+</body>
+</html>

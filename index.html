@@ -66,6 +66,48 @@
             filter: drop-shadow(5px 5px 0px #ff00ff);
         }
 
+        /* SPIKY BUTTON STYLES (NEW) */
+        .warp-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            z-index: 100;
+            position: relative;
+        }
+
+        .spiky-button {
+            background-color: #ff00ff;
+            color: black;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            text-decoration: none;
+            padding: 40px;
+            text-align: center;
+            line-height: 1.2;
+            
+            /* The Spiky Polygon Shape */
+            clip-path: polygon(
+                20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 
+                80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%
+            );
+            
+            /* Fast Rainbow (1s) + Pulse */
+            animation: rainbow-flash 1s infinite, pulse-scale 0.5s infinite alternate;
+            
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .spiky-button:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        @keyframes pulse-scale {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
         /* Animation Variants */
         .dance-1 { animation: bounce 0.6s infinite alternate; }
         .dance-2 { animation: shake 0.3s infinite; }
@@ -184,6 +226,12 @@
             <p align="center" style="background: black;"><b>GLITCH</b></p>
         </div>
 
+    </div>
+
+    <div class="warp-button-container">
+        <a href="game.html" class="spiky-button">
+            <br>ENTER<br>THE<br>VOID<br>
+        </a>
     </div>
 
     <p class="blink">!!! WARNING: DON'T GET ATTACHED !!!</p>
