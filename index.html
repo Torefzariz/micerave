@@ -120,26 +120,55 @@
             to { transform: scale(1.1); }
         }
 
-        /* HIDDEN EASTER EGG BUTTON (Top Left) */
+  /* HIDDEN EASTER EGG BUTTON (Top Left) */
         .easter-egg {
+            display: block; /* <--- THIS IS THE FIX! Makes the box exist */
             position: fixed;
-            top: 0;
+            top: 70px;
             left: 0;
-            width: 50px;  /* Size of the hidden zone */
-            height: 50px;
-            z-index: 9999; /* Sit on top of everything */
+            width: 70px;  /* Made it slightly bigger to find easier */
+            height: 70px;
+            z-index: 9999;
             cursor: pointer;
             
-            /* The requested animation */
             background-color: #00ff00;
-            animation: rainbow-flash 5s infinite;
             
-            /* Make it semi-transparent so it's "hidden" but visible if you look */
-            opacity: 0.5; 
+            /* Flashing FASTER (1s) so it doesn't blend into the background */
+            animation: rainbow-flash 1s infinite;
+            
+            /* Start fully visible so you can find it, then you can lower this number later */
+            opacity: 0.8; 
+            border: 2px solid white; /* Temporary white border to help you find it */
         }
         
         .easter-egg:hover {
-            opacity: 1; /* Fully visible on hover */
+            opacity: 1;
+            transform: scale(1.1);
+        }
+/* HIDDEN EASTER EGG BUTTON (Mid right) */
+        .easter-egg2 {
+            display: block; /* <--- THIS IS THE FIX! Makes the box exist */
+            position: fixed;
+            top: 140px;
+            right: 0;
+            width: 70px;  /* Made it slightly bigger to find easier */
+            height: 70px;
+            z-index: 9999;
+            cursor: pointer;
+            
+            background-color: #00ff00;
+            
+            /* Flashing FASTER (1s) so it doesn't blend into the background */
+            animation: rainbow-flash 3s infinite;
+            
+            /* Start fully visible so you can find it, then you can lower this number later */
+            opacity: 0.8; 
+            border: 2px solid white; /* Temporary white border to help you find it */
+        }
+        
+        .easter-egg2:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         /* Animation Variants */
@@ -222,6 +251,7 @@
 <body>
 
     <a href="secret.html" class="easter-egg"></a>
+    <a href="secret2.html" class="easter-egg2"></a>
 
     <div class="pizza-zone">
         <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
