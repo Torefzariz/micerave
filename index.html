@@ -3,309 +3,83 @@
 <head>
     <title>~*~ MOUSE SURVIVORS RAVE CAVE ~*~</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="icon" href="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" type="image/gif">
-
-    <meta property="og:title" content="~*~ MOUSE SURVIVORS RAVE CAVE ~*~">
-    <meta property="og:description" content="WE BEAT THE ANESTHESIA 🐭🍕 NO CATS ALLOWED. ENTER THE VOID.">
-    <meta property="og:image" content="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif">
-    <meta property="og:url" content="https://micerave.com">
-    <meta property="og:type" content="website">
-
+    
     <style>
-        body {
-            /* Tiled background with RAINBOW overlay */
-            background-image: url('https://www.transparenttextures.com/patterns/starry-night.png');
-            background-color: #0000ff;
-            color: #00ff00;
-            font-family: "Comic Sans MS", cursive, sans-serif;
+        body, html {
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            animation: rainbow-flash 5s infinite;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* The iframe handles the scroll */
+            background-color: black;
         }
 
-        /* FLYING COLORS ANIMATION */
-        @keyframes rainbow-flash {
-            0% {background-color: #0000ff;}
-            25% {background-color: #ff00ff;}
-            50% {background-color: #ff0000;}
-            75% {background-color: #ffff00;}
-            100% {background-color: #0000ff;}
+        /* The Window that shows your actual pages */
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
         }
 
-        /* Responsive Images */
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-
-        .marquee-container {
-            background: #ff00ff;
-            color: white;
-            padding: 10px;
+        /* THE DJ BUTTON - NOW LIVES HERE FOREVER */
+        .dj-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999; /* Sits on top of the iframe */
+            background-color: #000000;
+            color: #00ff00;
+            border: 4px ridge #ff00ff;
+            font-family: "Comic Sans MS", cursive, sans-serif;
             font-weight: bold;
-            border-bottom: 5px ridge #00ffff;
-            border-top: 5px ridge #00ffff;
+            font-size: 16px;
+            padding: 15px;
+            cursor: pointer;
+            animation: pulse-scale 0.4s infinite alternate;
         }
 
-        /* FLEXIBLE DANCE FLOOR */
-        .dance-floor {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-            min-height: 300px;
-        }
-
-        .mouse-container {
-            text-align: center;
-            z-index: 10;
-            flex: 0 1 45%; /* Two per row on mobile */
-        }
-
-        /* Neon Text Style */
-        .mouse-container p {
-            background: none !important;
-            text-shadow: 4px 4px 0px #000000;
-            font-size: 1.2rem;
-            margin-top: 5px;
-            font-weight: 900;
-        }
-
-        /* MOUSE STYLES */
-        .mouse-img {
-            height: 150px;
-            width: auto;
-            max-width: 90%;
-            filter: drop-shadow(5px 5px 0px #ff00ff);
-        }
-
-        /* SPIKY BUTTON STYLES */
-        .warp-button-container {
-            display: flex;
-            justify-content: center;
-            margin: 40px 0;
-            z-index: 100;
-            position: relative;
-        }
-
-        .spiky-button {
+        .dj-button:active {
             background-color: #ff00ff;
             color: black;
-            font-family: "Comic Sans MS", cursive, sans-serif;
-            font-weight: 900;
-            font-size: 18px;
-            text-decoration: none;
-            padding: 40px;
-            text-align: center;
-            line-height: 1.2;
-            clip-path: polygon(
-                20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 
-                80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%
-            );
-            animation: rainbow-flash 1s infinite, pulse-scale 0.5s infinite alternate;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .spiky-button:hover {
-            transform: scale(1.2) rotate(10deg);
         }
 
         @keyframes pulse-scale {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
         }
-
-  /* HIDDEN EASTER EGG BUTTON (Top Left) */
-        .easter-egg {
-            display: block; /* <--- THIS IS THE FIX! Makes the box exist */
-            position: fixed;
-            top: 70px;
-            left: 0;
-            width: 70px;  /* Made it slightly bigger to find easier */
-            height: 70px;
-            z-index: 9999;
-            cursor: pointer;
-            
-            background-color: #00ff00;
-            
-            /* Flashing FASTER (1s) so it doesn't blend into the background */
-            animation: rainbow-flash 1s infinite;
-            
-            /* Start fully visible so you can find it, then you can lower this number later */
-            opacity: 0.8; 
-            border: 2px solid white; /* Temporary white border to help you find it */
-        }
-        
-        .easter-egg:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-/* HIDDEN EASTER EGG BUTTON (Mid right) */
-        .easter-egg2 {
-            display: block; /* <--- THIS IS THE FIX! Makes the box exist */
-            position: fixed;
-            bottom: 300px;
-            right: 0;
-            width: 70px;  /* Made it slightly bigger to find easier */
-            height: 70px;
-            z-index: 9999;
-            cursor: pointer;
-            
-            background-color: #00ff00;
-            
-            /* Flashing FASTER (1s) so it doesn't blend into the background */
-            animation: rainbow-flash 3s infinite;
-            
-            /* Start fully visible so you can find it, then you can lower this number later */
-            opacity: 0.8; 
-            border: 2px solid white; /* Temporary white border to help you find it */
-        }
-        
-        .easter-egg2:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        /* Animation Variants */
-        .dance-1 { animation: bounce 0.6s infinite alternate; }
-        .dance-2 { animation: shake 0.3s infinite; }
-        .dance-3 { animation: spin-wiggle 1s infinite linear; }
-        
-        .evil-filter {
-            filter: invert(1) hue-rotate(180deg) drop-shadow(5px 5px 0px #000000);
-        }
-
-        /* PIZZA ZONES */
-        .pizza-zone {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .flying-pizza {
-            position: absolute;
-            width: 70px;
-        }
-
-        /* KEYFRAME ANIMATIONS */
-        @keyframes bounce {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-20px); }
-        }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-1px, -2px) rotate(-5deg); }
-            100% { transform: translate(1px, -1px) rotate(5deg); }
-        }
-
-        @keyframes spin-wiggle {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        @keyframes fly-diagonal {
-            0% { top: -10%; left: -10%; transform: rotate(0deg); }
-            100% { top: 110%; left: 110%; transform: rotate(360deg); }
-        }
-
-        @keyframes fly-reverse {
-            0% { top: -10%; right: -10%; transform: rotate(0deg); }
-            100% { top: 110%; right: 110%; transform: rotate(-360deg); }
-        }
-
-        @keyframes float-center {
-            0% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
-            50% { transform: translate(-50%, -50%) translateY(-50px) rotate(10deg); }
-            100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
-        }
-
-        .blink {
-            animation: blinker 0.3s linear infinite;
-            color: yellow;
-            font-size: 1.5rem;
-            text-align: center;
-            text-shadow: 2px 2px #ff0000;
-            margin-top: 30px;
-        }
-
-        @keyframes blinker { 50% { opacity: 0; } }
-
-        /* Mobile tweaks */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.5rem; }
-            .mouse-img { height: 100px; }
-        }
     </style>
 </head>
 <body>
 
-    <a href="secret.html" class="easter-egg"></a>
-    <a href="secret2.html" class="easter-egg2"></a>
+    <audio id="raveMusic" loop>
+        <source src="rave.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="pizza-zone">
-        <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
-        <img src="https://media.giphy.com/media/1108D2tVaUN3eo/giphy.gif" class="flying-pizza" style="top: 50%; left: 50%; width: 100px; animation: float-center 4s ease-in-out infinite;">
-        <img src="https://media.giphy.com/media/eccZTdMZtUjfy/giphy.gif" class="flying-pizza" style="animation: fly-reverse 6s linear infinite;">
-    </div>
+    <button class="dj-button" onclick="toggleMusic()">🔊 START THE PARTY</button>
 
-    <div class="marquee-container">
-        <marquee scrollamount="20" bgcolor="#000000">
-            🍕🍕🍕 WELCOME TO THE SURVIVOR ZONE 🍕🍕🍕 WE BEAT THE ANESTHESIA 🍕🍕🍕 NO CATS ALLOWED 🍕🍕🍕
-        </marquee>
-    </div>
+    <iframe src="home.html" name="content-frame"></iframe>
 
-    <h1 align="center" style="color: white; text-shadow: 4px 4px #000000;"><u>~*~ The Mouse Duo Fan Club ~*~</u></h1>
+    <script>
+        var music = document.getElementById("raveMusic");
+        var btn = document.querySelector(".dj-button");
+        var isPlaying = false;
 
-    <div class="dance-floor">
-        
-        <div class="mouse-container">
-            <img src="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" class="mouse-img dance-1">
-            <p align="center"><b>STITCH</b></p>
-        </div>
-        
-        <div class="mouse-container">
-            <img src="https://media.giphy.com/media/DebhXJUVWmyNDTt8Lv/giphy.gif" class="mouse-img dance-3">
-            <p align="center"><b>PATCH</b></p>
-        </div>
-
-        <div class="mouse-container">
-            <img src="https://media.giphy.com/media/zrksowazmCxTl4SKN4/giphy.gif" class="mouse-img dance-2 evil-filter">
-            <p align="center"><b>TWITCH</b></p>
-        </div>
-
-        <div class="mouse-container">
-            <img src="https://media.giphy.com/media/Xjpeb9rCEerhFUtZF0/giphy.gif" class="mouse-img dance-1" style="opacity: 0.8;">
-            <p align="center"><b>GLITCH</b></p>
-        </div>
-
-    </div>
-
-    <div class="warp-button-container">
-        <a href="game.html" class="spiky-button">
-            <br>ENTER<br>THE<br>VOID<br>
-        </a>
-    </div>
-
-    <p class="blink">!!! WARNING: DON'T GET ATTACHED !!!</p>
-
-    <center>
-        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExendkbnJraDhzeTh1Y3dsbGh0aXVlbnIwOHhpdGE5Y3g0bm00ZWhmeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nSAunccuFXmJignTVL/giphy.gif" class="under-construction" style="width: 200px;">
-        <br><br>
-        <img src="https://media.giphy.com/media/fVeAI9dyD5ssIFyOyM/giphy.gif" width="80">
-    </center>
-
-    <embed src="https://www.worldofspectrum.org/pub/sinclair/music/midi/Techno.mid" autostart="true" loop="true" width="2" height="0">
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                btn.innerHTML = "🔊 RESUME RAVE";
+                btn.style.animation = "none";
+                isPlaying = false;
+            } else {
+                music.play();
+                btn.innerHTML = "🔇 STOP THE NOISE";
+                btn.style.animation = "pulse-scale 0.4s infinite alternate";
+                isPlaying = true;
+            }
+        }
+    </script>
 
 </body>
 </html>

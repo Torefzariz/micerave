@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>~*~ MOUSE SURVIVORS RAVE CAVE ~*~</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="icon" href="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" type="image/gif">
+
+    <meta property="og:title" content="~*~ MOUSE SURVIVORS RAVE CAVE ~*~">
+    <meta property="og:description" content="WE BEAT THE ANESTHESIA 🐭🍕 NO CATS ALLOWED. ENTER THE VOID.">
+    <meta property="og:image" content="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif">
+    <meta property="og:url" content="https://micerave.com">
+    <meta property="og:type" content="website">
+
+    <style>
+        body {
+            /* Tiled background with RAINBOW overlay */
+            background-image: url('https://www.transparenttextures.com/patterns/starry-night.png');
+            background-color: #0000ff;
+            color: #00ff00;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            animation: rainbow-flash 5s infinite;
+        }
+
+        /* FLYING COLORS ANIMATION */
+        @keyframes rainbow-flash {
+            0% {background-color: #0000ff;}
+            25% {background-color: #ff00ff;}
+            50% {background-color: #ff0000;}
+            75% {background-color: #ffff00;}
+            100% {background-color: #0000ff;}
+        }
+
+        /* Responsive Images */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .marquee-container {
+            background: #ff00ff;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            border-bottom: 5px ridge #00ffff;
+            border-top: 5px ridge #00ffff;
+        }
+
+        /* FLEXIBLE DANCE FLOOR */
+        .dance-floor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .mouse-container {
+            text-align: center;
+            z-index: 10;
+            flex: 0 1 45%; /* Two per row on mobile */
+        }
+
+        /* Neon Text Style */
+        .mouse-container p {
+            background: none !important;
+            text-shadow: 4px 4px 0px #000000;
+            font-size: 1.2rem;
+            margin-top: 5px;
+            font-weight: 900;
+        }
+
+        /* MOUSE STYLES */
+        .mouse-img {
+            height: 150px;
+            width: auto;
+            max-width: 90%;
+            filter: drop-shadow(5px 5px 0px #ff00ff);
+        }
+
+        /* SPIKY BUTTON STYLES */
+        .warp-button-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            z-index: 100;
+            position: relative;
+        }
+
+        .spiky-button {
+            background-color: #ff00ff;
+            color: black;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: 900;
+            font-size: 18px;
+            text-decoration: none;
+            padding: 40px;
+            text-align: center;
+            line-height: 1.2;
+            clip-path: polygon(
+                20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 
+                80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%
+            );
+            animation: rainbow-flash 1s infinite, pulse-scale 0.5s infinite alternate;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .spiky-button:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        @keyframes pulse-scale {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* HIDDEN EASTER EGG 1 (Top Left) */
+        .easter-egg {
+            display: block;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 70px;
+            height: 70px;
+            z-index: 9999;
+            cursor: pointer;
+            background-color: #00ff00;
+            animation: rainbow-flash 1s infinite;
+            opacity: 0.8; 
+            border: 2px solid white;
+        }
+        
+        .easter-egg:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* HIDDEN EASTER EGG 2 (Mid Right) */
+        .easter-egg2 {
+            display: block;
+            position: fixed;
+            bottom: 300px;
+            right: 0;
+            width: 70px;
+            height: 70px;
+            z-index: 9999;
+            cursor: pointer;
+            background-color: #00ff00;
+            animation: rainbow-flash 3s infinite;
+            opacity: 0.8; 
+            border: 2px solid white;
+        }
+        
+        .easter-egg2:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* CREDIT TEXT STYLE */
+        .credit {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 0px #000000;
+            letter-spacing: 2px;
+        }
+
+        /* Animation Variants */
+        .dance-1 { animation: bounce 0.6s infinite alternate; }
+        .dance-2 { animation: shake 0.3s infinite; }
+        .dance-3 { animation: spin-wiggle 1s infinite linear; }
+        
+        .evil-filter {
+            filter: invert(1) hue-rotate(180deg) drop-shadow(5px 5px 0px #000000);
+        }
+
+        /* PIZZA ZONES */
+        .pizza-zone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .flying-pizza {
+            position: absolute;
+            width: 70px;
+        }
+
+        /* KEYFRAME ANIMATIONS */
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-20px); }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            50% { transform: translate(-1px, -2px) rotate(-5deg); }
+            100% { transform: translate(1px, -1px) rotate(5deg); }
+        }
+
+        @keyframes spin-wiggle {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes fly-diagonal {
+            0% { top: -10%; left: -10%; transform: rotate(0deg); }
+            100% { top: 110%; left: 110%; transform: rotate(360deg); }
+        }
+
+        @keyframes fly-reverse {
+            0% { top: -10%; right: -10%; transform: rotate(0deg); }
+            100% { top: 110%; right: 110%; transform: rotate(-360deg); }
+        }
+
+        @keyframes float-center {
+            0% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) translateY(-50px) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+        }
+
+        .blink {
+            animation: blinker 0.3s linear infinite;
+            color: yellow;
+            font-size: 1.5rem;
+            text-align: center;
+            text-shadow: 2px 2px #ff0000;
+            margin-top: 30px;
+        }
+
+        @keyframes blinker { 50% { opacity: 0; } }
+
+        /* Mobile tweaks */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            .mouse-img { height: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="secret.html" class="easter-egg"></a>
+    <a href="secret2.html" class="easter-egg2"></a>
+
+    <div class="pizza-zone">
+        <img src="https://media.giphy.com/media/10kxE34bJPaUO4/giphy.gif" class="flying-pizza" style="animation: fly-diagonal 8s linear infinite;">
+        <img src="https://media.giphy.com/media/1108D2tVaUN3eo/giphy.gif" class="flying-pizza" style="top: 50%; left: 50%; width: 100px; animation: float-center 4s ease-in-out infinite;">
+        <img src="https://media.giphy.com/media/eccZTdMZtUjfy/giphy.gif" class="flying-pizza" style="animation: fly-reverse 6s linear infinite;">
+    </div>
+
+    <div class="marquee-container">
+        <marquee scrollamount="20" bgcolor="#000000">
+            🍕🍕🍕 WELCOME TO THE SURVIVOR ZONE 🍕🍕🍕 WE BEAT THE ANESTHESIA 🍕🍕🍕 NO CATS ALLOWED 🍕🍕🍕
+        </marquee>
+    </div>
+
+    <h1 align="center" style="color: white; text-shadow: 4px 4px #000000;"><u>~*~ The Mouse Duo Fan Club ~*~</u></h1>
+
+    <div class="dance-floor">
+        
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/4BiWnG2J8ryOAtFSZ8/giphy.gif" class="mouse-img dance-1">
+            <p align="center"><b>STITCH</b></p>
+        </div>
+        
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/DebhXJUVWmyNDTt8Lv/giphy.gif" class="mouse-img dance-3">
+            <p align="center"><b>PATCH</b></p>
+        </div>
+
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/zrksowazmCxTl4SKN4/giphy.gif" class="mouse-img dance-2 evil-filter">
+            <p align="center"><b>TWITCH</b></p>
+        </div>
+
+        <div class="mouse-container">
+            <img src="https://media.giphy.com/media/Xjpeb9rCEerhFUtZF0/giphy.gif" class="mouse-img dance-1" style="opacity: 0.8;">
+            <p align="center"><b>GLITCH</b></p>
+        </div>
+
+    </div>
+
+    <div class="warp-button-container">
+        <a href="game.html" class="spiky-button">
+            <br>ENTER<br>THE<br>VOID<br>
+        </a>
+    </div>
+
+    <p class="blink">!!! WARNING: DON'T GET ATTACHED !!!</p>
+
+    <h1 class="credit">
+        <span style="color: #FF0000;">T</span><span style="color: #FFA500;">h</span><span style="color: #FFFF00;">a</span><span style="color: #00FF00;">n</span><span style="color: #00FFFF;">k</span><span style="color: #1E90FF;">s</span>
+        &nbsp;
+        <span style="color: #FF00FF;">t</span><span style="color: #FF1493;">o</span>
+        &nbsp;
+        <span style="color: #00FF7F;">M</span><span style="color: #ADFF2F;">i</span><span style="color: #FF69B4;">l</span><span style="color: #7B68EE;">a</span>
+    </h1>
+
+    <center>
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExendkbnJraDhzeTh1Y3dsbGh0aXVlbnIwOHhpdGE5Y3g0bm00ZWhmeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/nSAunccuFXmJignTVL/giphy.gif" class="under-construction" style="width: 200px;">
+        <br><br>
+        <img src="https://media.giphy.com/media/fVeAI9dyD5ssIFyOyM/giphy.gif" width="80">
+    </center>
+
+</body>
+</html>
