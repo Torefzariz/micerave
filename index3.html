@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lauren & Eyal - Unfinished Business</title>
+    <style>
+        /* --- THE AESTHETIC: RAW & OFFICECORE --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f4f4f4; 
+            color: #000;
+            touch-action: none; 
+        }
+
+        /* The Canvas */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            cursor: crosshair;
+        }
+
+        /* The Fading Instruction Text */
+        .outline-text-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            text-align: center;
+            z-index: 2;
+            pointer-events: none; 
+            mix-blend-mode: multiply; 
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .outline-text {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1;
+            text-transform: uppercase;
+            color: black;
+            border: 5px solid black;
+            padding: 20px;
+            background: white; 
+            transform: rotate(-2deg); 
+        }
+
+        /* --- THE UI LAYER --- */
+        .ui-layer {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            background: white;
+            padding: 15px;
+            border: 2px solid black;
+            box-shadow: 5px 5px 0px rgba(0,0,0,1);
+            pointer-events: auto;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            font-size: 1rem;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed black;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .date-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            line-height: 1.2;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* The Sticky Note */
+        .note {
+            position: absolute;
+            bottom: 140px; /* Moved up to make room for bigger controls */
+            right: 20px;
+            background: #ffff88; 
+            color: black;
+            padding: 15px;
+            width: 200px;
+            font-size: 0.85rem;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
+            transform: rotate(3deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            border: 1px solid #e0c800;
+            pointer-events: auto;
+        }
+
+        /* --- UPDATED CONTROLS --- */
+        .controls-wrapper {
+            pointer-events: auto;
+            background: white;
+            border: 2px solid black;
+            padding: 10px;
+            margin: 0 auto;
+            box-shadow: 4px 4px 0px black;
+            max-width: 95%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-row {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tool-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+        /* Color Buttons */
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .color-btn:active { transform: scale(0.9); }
+        .active-color { 
+            box-shadow: 0 0 0 2px white, 0 0 0 4px black; 
+            border: none;
+        }
+
+        /* Thickness & Action Buttons */
+        .action-btn {
+            background: white; 
+            border: 1px solid black; 
+            font-family: 'Courier New'; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+            padding: 5px 12px;
+            transition: background 0.2s;
+        }
+        
+        .action-btn.active-tool {
+            background: black;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #ffebeb;
+            border: 1px solid red;
+            color: red;
+            margin-left: auto; /* Pushes reset to the right */
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .outline-text { font-size: 2.5rem; border-width: 3px; }
+            .note { bottom: 160px; right: 10px; width: 160px; font-size: 0.75rem; }
+            .color-btn { width: 25px; height: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="drawCanvas"></canvas>
+
+    <div class="outline-text-container" id="instructionText">
+        <div class="outline-text">
+            MAKE<br>YOUR<br>OWN<br>INVITATION
+        </div>
+    </div>
+
+    <div class="ui-layer">
+        <header>
+            <h1>Lauren & Eyal</h1>
+            <p class="subtitle">SAVE_THE_DATE</p>
+            <div class="date-display">
+                10.2.26<br>------------<br>2.10.26
+            </div>
+        </header>
+
+        <div class="note">
+            <strong>NOTE TO GUESTS:</strong><br><br>
+            AI is taking graphic designers jobs, now you too.<br><br>
+            Please create your own save the date.
+        </div>
+
+        <div class="controls-wrapper">
+            <div class="color-row">
+                <div class="color-btn active-color" style="background: #111111;" onclick="setColor('#111111', this)"></div> <div class="color-btn" style="background: #FF4136;" onclick="setColor('#FF4136', this)"></div> <div class="color-btn" style="background: #0074D9;" onclick="setColor('#0074D9', this)"></div> <div class="color-btn" style="background: #FFDC00;" onclick="setColor('#FFDC00', this)"></div> <div class="color-btn" style="background: #2ECC40;" onclick="setColor('#2ECC40', this)"></div> <div class="color-btn" style="background: #B10DC9;" onclick="setColor('#B10DC9', this)"></div> <div class="color-btn" style="background: #FFFFFF;" onclick="setColor('#f4f4f4', this)"></div> </div>
+
+            <div class="tool-row">
+                <button class="action-btn active-tool" id="btnThin" onclick="setThickness(5, this)">PEN</button>
+                <button class="action-btn" id="btnThick" onclick="setThickness(25, this)">MARKER</button>
+                
+                <button class="action-btn reset-btn" onclick="clearCanvas()">RESET</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawCanvas');
+        const ctx = canvas.getContext('2d');
+        const instructionText = document.getElementById('instructionText');
+        
+        let painting = false;
+        let color = '#111111';
+        let lineWidth = 5; // Start with Pen thickness
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.fillStyle = "#f4f4f4"; 
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function startPosition(e) {
+            painting = true;
+            instructionText.style.opacity = '0'; // Hide text
+            draw(e);
+        }
+        
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+        
+        function draw(e) {
+            if (!painting) return;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            ctx.lineWidth = lineWidth;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = color;
+
+            ctx.lineTo(clientX, clientY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(clientX, clientY);
+        }
+
+        // Event Listeners
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+        
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); });
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+
+        // Logic for changing Color
+        function setColor(newColor, btn) {
+            color = newColor;
+            // Update visual state of color buttons
+            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active-color'));
+            btn.classList.add('active-color');
+        }
+
+        // Logic for changing Thickness
+        function setThickness(newWidth, btn) {
+            lineWidth = newWidth;
+            // Update visual state of tool buttons
+            document.getElementById('btnThin').classList.remove('active-tool');
+            document.getElementById('btnThick').classList.remove('active-tool');
+            btn.classList.add('active-tool');
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = "#f4f4f4";
+            ctx.fillRect(0,0, canvas.width, canvas.height);
+            instructionText.style.opacity = '1'; // Show text again
+        }
+    </script>
+</body>
+</html>
