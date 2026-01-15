@@ -2,315 +2,192 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lauren & Eyal - Unfinished Business</title>
+    <title>Save the date</title>
     <style>
-        /* --- THE AESTHETIC: RAW & OFFICECORE --- */
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            height: 100%;
-            width: 100%;
             overflow: hidden;
+            background-color: #1a1a1a;
+            color: #555;
             font-family: 'Courier New', Courier, monospace;
-            background-color: #f4f4f4; 
-            color: #000;
-            touch-action: none; 
         }
-
-        /* The Canvas */
-        canvas {
+        #instruction {
             position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            cursor: crosshair;
-        }
-
-        /* The Fading Instruction Text */
-        .outline-text-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
+            top: 20px;
+            width: 100%;
             text-align: center;
-            z-index: 2;
-            pointer-events: none; 
-            mix-blend-mode: multiply; 
-            transition: opacity 0.5s ease;
-            opacity: 1;
-        }
-
-        .outline-text {
-            font-size: 5rem;
-            font-weight: 900;
-            line-height: 1;
-            text-transform: uppercase;
-            color: black;
-            border: 5px solid black;
-            padding: 20px;
-            background: white; 
-            transform: rotate(-2deg); 
-        }
-
-        /* --- THE UI LAYER --- */
-        .ui-layer {
-            position: absolute;
+            pointer-events: none; /* Let mouse pass through to canvas */
+            user-select: none;
             z-index: 10;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        header {
-            text-align: center;
-            background: white;
-            padding: 15px;
-            border: 2px solid black;
-            box-shadow: 5px 5px 0px rgba(0,0,0,1);
-            pointer-events: auto;
-            max-width: 350px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            margin: 0;
-            letter-spacing: -1px;
-        }
-
-        p.subtitle {
-            font-size: 1rem;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border-bottom: 1px dashed black;
-            padding-bottom: 5px;
-            display: inline-block;
-        }
-
-        .date-display {
-            font-size: 1.8rem;
-            font-weight: bold;
-            line-height: 1.2;
-            font-family: 'Courier New', Courier, monospace;
-        }
-
-        /* The Sticky Note */
-        .note {
-            position: absolute;
-            bottom: 140px; /* Moved up to make room for bigger controls */
-            right: 20px;
-            background: #ffff88; 
-            color: black;
-            padding: 15px;
-            width: 200px;
-            font-size: 0.85rem;
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
-            transform: rotate(3deg);
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-            border: 1px solid #e0c800;
-            pointer-events: auto;
-        }
-
-        /* --- UPDATED CONTROLS --- */
-        .controls-wrapper {
-            pointer-events: auto;
-            background: white;
-            border: 2px solid black;
-            padding: 10px;
-            margin: 0 auto;
-            box-shadow: 4px 4px 0px black;
-            max-width: 95%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .color-row {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .tool-row {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            align-items: center;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            width: 100%;
-        }
-
-        /* Color Buttons */
-        .color-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
-        .color-btn:active { transform: scale(0.9); }
-        .active-color { 
-            box-shadow: 0 0 0 2px white, 0 0 0 4px black; 
-            border: none;
-        }
-
-        /* Thickness & Action Buttons */
-        .action-btn {
-            background: white; 
-            border: 1px solid black; 
-            font-family: 'Courier New'; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: 0.8rem; 
-            padding: 5px 12px;
-            transition: background 0.2s;
-        }
-        
-        .action-btn.active-tool {
-            background: black;
-            color: white;
-        }
-
-        .reset-btn {
-            background: #ffebeb;
-            border: 1px solid red;
-            color: red;
-            margin-left: auto; /* Pushes reset to the right */
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 600px) {
-            .outline-text { font-size: 2.5rem; border-width: 3px; }
-            .note { bottom: 160px; right: 10px; width: 160px; font-size: 0.75rem; }
-            .color-btn { width: 25px; height: 25px; }
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="drawCanvas"></canvas>
+<div id="instruction">Save the date: Oct 2 2026. <br> Please fill your name and your +1. <br><br>Type to create. Drag to throw. [SPACE] to explode.</div>
 
-    <div class="outline-text-container" id="instructionText">
-        <div class="outline-text">
-            MAKE<br>YOUR<br>OWN<br>INVITATION
-        </div>
-    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
-    <div class="ui-layer">
-        <header>
-            <h1>Lauren & Eyal</h1>
-            <p class="subtitle">SAVE_THE_DATE</p>
-            <div class="date-display">
-                2.Oct.26
-            </div>
-        </header>
+<script>
+    // --- SETUP MATTER.JS ---
+    const Engine = Matter.Engine,
+          Render = Matter.Render,
+          Runner = Matter.Runner,
+          Bodies = Matter.Bodies,
+          Composite = Matter.Composite,
+          Mouse = Matter.Mouse,
+          MouseConstraint = Matter.MouseConstraint,
+          Events = Matter.Events,
+          Body = Matter.Body;
 
-        <div class="note">
-            <strong>NOTE TO GUESTS:</strong><br><br>
-            AI is taking graphic designers jobs, now you too.<br><br>
-            Please create your own save the date.
-        </div>
+    // Create engine
+    const engine = Engine.create();
+    const world = engine.world;
 
-        <div class="controls-wrapper">
-            <div class="color-row">
-                <div class="color-btn active-color" style="background: #111111;" onclick="setColor('#111111', this)"></div> <div class="color-btn" style="background: #FF4136;" onclick="setColor('#FF4136', this)"></div> <div class="color-btn" style="background: #0074D9;" onclick="setColor('#0074D9', this)"></div> <div class="color-btn" style="background: #FFDC00;" onclick="setColor('#FFDC00', this)"></div> <div class="color-btn" style="background: #2ECC40;" onclick="setColor('#2ECC40', this)"></div> <div class="color-btn" style="background: #B10DC9;" onclick="setColor('#B10DC9', this)"></div> <div class="color-btn" style="background: #FFFFFF;" onclick="setColor('#f4f4f4', this)"></div> </div>
+    // Create renderer
+    const render = Render.create({
+        element: document.body,
+        engine: engine,
+        options: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            background: '#1a1a1a',
+            wireframes: false // We want solid shapes
+        }
+    });
 
-            <div class="tool-row">
-                <button class="action-btn active-tool" id="btnThin" onclick="setThickness(5, this)">PEN</button>
-                <button class="action-btn" id="btnThick" onclick="setThickness(25, this)">MARKER</button>
-                
-                <button class="action-btn reset-btn" onclick="clearCanvas()">RESET</button>
-            </div>
-        </div>
-    </div>
+    // --- WALLS ---
+    function createWalls() {
+        const ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight + 30, window.innerWidth, 60, { isStatic: true });
+        const leftWall = Bodies.rectangle(-30, window.innerHeight / 2, 60, window.innerHeight, { isStatic: true });
+        const rightWall = Bodies.rectangle(window.innerWidth + 30, window.innerHeight / 2, 60, window.innerHeight, { isStatic: true });
+        Composite.add(world, [ground, leftWall, rightWall]);
+    }
+    createWalls();
 
-    <script>
-        const canvas = document.getElementById('drawCanvas');
-        const ctx = canvas.getContext('2d');
-        const instructionText = document.getElementById('instructionText');
+    // --- INTERACTION ---
+    const mouse = Mouse.create(render.canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+        mouse: mouse,
+        constraint: {
+            stiffness: 0.2,
+            render: { visible: false }
+        }
+    });
+    Composite.add(world, mouseConstraint);
+    render.mouse = mouse; // Sync mouse with renderer
+
+    // --- CUSTOM TEXT RENDERING ---
+    // Matter.js draws shapes, but not text. We hook into the rendering loop to draw text on top.
+    Events.on(render, 'afterRender', function() {
+        const context = render.context;
+        const bodies = Composite.allBodies(world);
+
+        context.font = "bold 40px Arial";
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+
+        bodies.forEach(body => {
+            // Only draw text if the body has a 'char' property (ignoring walls)
+            if (body.char) {
+                const { x, y } = body.position;
+                const angle = body.angle;
+
+                context.save();
+                context.translate(x, y);
+                context.rotate(angle);
+                context.fillStyle = "#ffffff";
+                context.fillText(body.char, 0, 2); // Slight offset for visual centering
+                context.restore();
+            }
+        });
+    });
+
+    // --- LOGIC: CREATE LETTERS ---
+    function spawnLetter(char) {
+        // Random x position near the top
+        const x = Math.random() * (window.innerWidth - 100) + 50;
+        const y = -50; 
         
-        let painting = false;
-        let color = '#111111';
-        let lineWidth = 5; // Start with Pen thickness
+        // Create a box for the letter
+        // You can change 'rectangle' to 'circle' if you prefer bubbles
+        const letterBody = Bodies.circle(x, y, 28, {
+            restitution: 0.8, // Bounciness (0-1)
+            friction: 0.5,
+            render: {
+                fillStyle: '#333', // Dark grey bubble
+                strokeStyle: '#555',
+                lineWidth: 2
+            }
+        });
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            ctx.fillStyle = "#f4f4f4"; 
-            ctx.fillRect(0,0, canvas.width, canvas.height);
+        // Tag the body with the character so we can render it later
+        letterBody.char = char;
+
+        // Add random rotation force for chaos
+        Body.setAngularVelocity(letterBody, (Math.random() - 0.5) * 0.2);
+
+        Composite.add(world, letterBody);
+    }
+
+    // --- EXPLOSION (Zero Gravity) ---
+    function explode() {
+        const bodies = Composite.allBodies(world);
+        bodies.forEach(body => {
+            if (!body.isStatic) {
+                // Apply a random upward force
+                Body.applyForce(body, body.position, {
+                    x: (Math.random() - 0.5) * 0.2,
+                    y: -0.2 // Shoot up
+                });
+            }
+        });
+    }
+
+    // --- INPUT LISTENERS ---
+    document.addEventListener('keydown', (e) => {
+        // Prevent default scrolling for Space
+        if (e.code === 'Space') {
+            e.preventDefault();
+            explode();
+            return;
         }
-        window.addEventListener('resize', resize);
-        resize();
 
-        function startPosition(e) {
-            painting = true;
-            instructionText.style.opacity = '0'; // Hide text
-            draw(e);
+        // Only print single characters (A-Z, 0-9, etc)
+        if (e.key.length === 1) {
+            spawnLetter(e.key);
         }
         
-        function endPosition() {
-            painting = false;
-            ctx.beginPath();
+        // Backspace: Remove the last added body (optional, but nice)
+        if (e.key === 'Backspace') {
+            const bodies = Composite.allBodies(world);
+            // Find the last non-static body
+            for (let i = bodies.length - 1; i >= 0; i--) {
+                if (!bodies[i].isStatic) {
+                    Composite.remove(world, bodies[i]);
+                    break;
+                }
+            }
         }
-        
-        function draw(e) {
-            if (!painting) return;
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    });
 
-            ctx.lineWidth = lineWidth;
-            ctx.lineCap = 'round';
-            ctx.strokeStyle = color;
+    // Handle Resize
+    window.addEventListener('resize', () => {
+        render.canvas.width = window.innerWidth;
+        render.canvas.height = window.innerHeight;
+        // Re-create walls (simplest way to handle resize)
+        Composite.clear(world, false, true); // Keep bodies, remove static
+        createWalls();
+        Composite.add(world, mouseConstraint);
+    });
 
-            ctx.lineTo(clientX, clientY);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(clientX, clientY);
-        }
+    // --- START ---
+    Render.run(render);
+    const runner = Runner.create();
+    Runner.run(runner, engine);
 
-        // Event Listeners
-        canvas.addEventListener('mousedown', startPosition);
-        canvas.addEventListener('mouseup', endPosition);
-        canvas.addEventListener('mousemove', draw);
-        
-        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startPosition(e); });
-        canvas.addEventListener('touchend', endPosition);
-        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
-
-        // Logic for changing Color
-        function setColor(newColor, btn) {
-            color = newColor;
-            // Update visual state of color buttons
-            document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active-color'));
-            btn.classList.add('active-color');
-        }
-
-        // Logic for changing Thickness
-        function setThickness(newWidth, btn) {
-            lineWidth = newWidth;
-            // Update visual state of tool buttons
-            document.getElementById('btnThin').classList.remove('active-tool');
-            document.getElementById('btnThick').classList.remove('active-tool');
-            btn.classList.add('active-tool');
-        }
-
-        function clearCanvas() {
-            ctx.fillStyle = "#f4f4f4";
-            ctx.fillRect(0,0, canvas.width, canvas.height);
-            instructionText.style.opacity = '1'; // Show text again
-        }
-    </script>
+</script>
 </body>
 </html>
