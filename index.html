@@ -45,9 +45,36 @@
             color: black;
         }
 
+        /* THE NEW "FIX MY SHOULDER" BUTTON */
+        .pt-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+            background-color: #000000;
+            color: #00ffff;
+            border: 4px ridge #0000ff;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 15px;
+            cursor: pointer;
+            animation: pulse-bounce 0.5s infinite alternate;
+        }
+
+        .pt-button:active {
+            background-color: #00ffff;
+            color: black;
+        }
+
         @keyframes pulse-scale {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
+        }
+
+        @keyframes pulse-bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
         }
     </style>
 </head>
@@ -57,9 +84,10 @@
         <source src="rave.mp3" type="audio/mpeg">
     </audio>
 
+    <button class="pt-button" onclick="fixMyShoulder()"><i class="fa-solid fa-user-doctor"></i> 🏋️‍♂️ FIX MY SHOULDER</button>
     <button class="dj-button" onclick="toggleMusic()">🔊 START THE PARTY</button>
 
-    <iframe src="home.html" name="content-frame"></iframe>
+    <iframe id="content-frame" src="home.html" name="content-frame"></iframe>
 
     <script>
         var music = document.getElementById("raveMusic");
@@ -78,6 +106,13 @@
                 btn.style.animation = "pulse-scale 0.4s infinite alternate";
                 isPlaying = true;
             }
+        }
+
+        // New function to switch your iframe content to the PT Tracker!
+        function fixMyShoulder() {
+            var frame = document.getElementById("content-frame");
+            // Assuming your PT Tracker HTML file is saved as 'pt.html' in the same folder:
+            frame.src = "pt.html"; 
         }
     </script>
 

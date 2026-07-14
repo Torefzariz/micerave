@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~*~ SHOULDER FIX ENGINE ~*~</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #00ffff;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h2 {
+            color: #ff00ff;
+            text-shadow: 2px 2px #0000ff;
+            text-align: center;
+            animation: bounce 0.6s infinite alternate;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 4px ridge #ff00ff;
+            padding: 20px;
+            background-color: #111111;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .timer-box {
+            border: 3px dashed #00ff00;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: #051a05;
+        }
+
+        #timer-display {
+            font-size: 36px;
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+            margin: 10px 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        select, input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background: #000000;
+            border: 2px solid #00ffff;
+            color: #00ff00;
+            font-family: "Comic Sans MS", Arial;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        select option {
+            background: #111111;
+            color: #00ff00;
+        }
+
+        button {
+            background-color: #000000;
+            color: #ff00ff;
+            border: 3px ridge #ff00ff;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:active {
+            background-color: #ff00ff;
+            color: #000000;
+        }
+
+        .log-list {
+            margin-top: 25px;
+            border-top: 2px dashed #ff00ff;
+            padding-top: 15px;
+        }
+
+        .log-item {
+            border: 2px solid #0000ff;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #000022;
+        }
+
+        .schedule-alert {
+            background-color: #221100;
+            border: 2px solid #ffaa00;
+            color: #ffaa00;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>⚡ SHOULDER REPAIR STATION ⚡</h2>
+
+        <!-- Day Tracker -->
+        <div id="schedule-box" class="schedule-alert"></div>
+
+        <!-- Rave Countdown Timer -->
+        <div class="timer-box">
+            <div style="color: #00ff00;">⏱️ ROUTINE COUNTDOWN</div>
+            <div id="timer-display">02:00</div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="toggleTimer()" id="timer-btn" style="color: #00ff00; border-color: #00ff00;">START HOLD</button>
+                <button onclick="resetTimer(120)" style="color: #cccccc; border-color: #cccccc;">RESET</button>
+            </div>
+        </div>
+
+        <!-- Logging Form -->
+        <form onsubmit="event.preventDefault(); saveLog();">
+            <label>📅 TARGET DATE</label>
+            <input type="date" id="date">
+
+            <label>🏋️‍♂️ CHOOSE YOUR MISSION</label>
+            <select id="exercise" onchange="handleExerciseChange()">
+                <option value="Elbow Floor Reach" data-time="120">🧘‍♂️ Elbow Floor Reach (2 Min Hold)</option>
+                <option value="Doorframe Lean" data-time="120">🚪 Doorframe Lean (2 Min Hold)</option>
+                <option value="Ball Massage Therapy" data-time="120">🥎 Ball Shoulder Massage (2 Mins)</option>
+                <option value="Unsupported Sit-up" data-time="0">🪑 Unsupported Sit-up (Max Time)</option>
+                <option value="Couch Butterfly Weights" data-time="0">🦋 Couch Butterfly Weights (Straight Arm)</option>
+            </select>
+
+            <label>📈 METRIC VALUE (Seconds or Reps)</label>
+            <input type="number" id="reps" placeholder="120">
+
+            <label>💥 PAIN METER (1-10)</label>
+            <input type="number" id="pain" min="1" max="10" value="2">
+
+            <label>📝 NOTES / COMPLAINTS</label>
+            <textarea id="notes" rows="2" placeholder="Any pops or tweaks?"></textarea>
+
+            <button type="submit">💾 SAVE LOG TO DEVICE</button>
+        </form>
+
+        <!-- Logged History View -->
+        <div class="log-list">
+            <h3 style="color: #ff00ff; margin-top: 0;">📋 RECOVERY HISTOGRAM</h3>
+            <div id="history-list">No entries yet. Data is stored entirely locally!</div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('date').valueAsDate = new Date();
+
+        const exerciseSelect = document.getElementById('exercise');
+        const repsInput = document.getElementById('reps');
+
+        function handleExerciseChange() {
+            const selectedOption = exerciseSelect.options[exerciseSelect.selectedIndex];
+            const defaultTime = parseInt(selectedOption.getAttribute('data-time') || "0");
+            
+            if (defaultTime > 0) {
+                repsInput.value = defaultTime;
+                resetTimer(defaultTime);
+            } else {
+                repsInput.value = "";
+                resetTimer(60); 
+            }
+        }
+
+        // Odd/Even day schedule alert generator
+        function setSchedule() {
+            const box = document.getElementById('schedule-box');
+            const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+            if (dayOfYear % 2 === 0) {
+                box.innerHTML = "⚠️ WEIGHT DAY! Stretches + Couch Butterflies!";
+            } else {
+                box.innerHTML = "✨ STRETCH DAY! Mobility only. Rest the weights!";
+            }
+        }
+
+        // Countdown clock logic
+        let timerInterval;
+        let timerSeconds = 120;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+            const secs = (timerSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timer-display').textContent = `${mins}:${secs}`;
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('timer-btn');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                btn.textContent = "RESUME";
+                isTimerRunning = false;
+            } else {
+                btn.textContent = "PAUSE";
+                isTimerRunning = true;
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        alert("💥 TIME IS UP! EXCELLENT HOLD!");
+                        handleExerciseChange();
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer(seconds) {
+            clearInterval(timerInterval);
+            timerSeconds = seconds || 120;
+            isTimerRunning = false;
+            updateTimerDisplay();
+            document.getElementById('timer-btn').textContent = "START HOLD";
+        }
+
+        // Local Browser Storage Core
+        function saveLog() {
+            const log = {
+                date: document.getElementById('date').value,
+                exercise: exerciseSelect.value,
+                reps: repsInput.value || "0",
+                pain: document.getElementById('pain').value || "1",
+                notes: document.getElementById('notes').value,
+                timestamp: Date.now()
+            };
+
+            let logs = JSON.parse(localStorage.getItem('pt_logs')) || [];
+            logs.unshift(log);
+            localStorage.setItem('pt_logs', JSON.stringify(logs));
+
+            document.getElementById('notes').value = '';
+            alert("Entry Saved Successfully!");
+            loadLogs();
+        }
+
+        function loadLogs() {
+            const logs = JSON.parse(localStorage.getItem('pt_logs')) || [];
+            const list = document.getElementById('history-list');
+            if(logs.length === 0) return;
+
+            list.innerHTML = logs.map(log => `
+                <div class="log-item">
+                    <span style="color: #ff00ff;">[${log.date}]</span> <strong>${log.exercise}</strong><br>
+                    ⚡ Output: ${log.reps} | 🩸 Pain: ${log.pain}/10<br>
+                    <small style="color: #888888;">${log.notes ? `Comment: ${log.notes}` : ''}</small>
+                </div>
+            `).join('');
+        }
+
+        // Setup on page boot
+        setSchedule();
+        handleExerciseChange();
+        loadLogs();
+    </script>
+</body>
+</html>
