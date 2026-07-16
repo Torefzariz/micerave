@@ -45,7 +45,7 @@
             color: black;
         }
 
-        /* THE NEW "FIX MY SHOULDER" BUTTON */
+        /* THE "FIX MY SHOULDER" BUTTON */
         .pt-button {
             position: fixed;
             bottom: 20px;
@@ -67,6 +67,30 @@
             color: black;
         }
 
+        /* "MOM'S ACCURATE 3D SCAN" BUTTON (TOP LEFT) */
+        .scan-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            background-color: #000000;
+            color: #ff007f;
+            border: 4px ridge #ff007f;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 15px;
+            cursor: pointer;
+            animation: pulse-glow 0.6s infinite alternate;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+        }
+
+        .scan-button:active {
+            background-color: #ff007f;
+            color: black;
+        }
+
+        /* ANIMATIONS */
         @keyframes pulse-scale {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
@@ -76,6 +100,30 @@
             from { transform: translateY(0); }
             to { transform: translateY(-10px); }
         }
+
+        @keyframes pulse-glow {
+            from {
+                transform: scale(1);
+                box-shadow: 0 0 5px rgba(255, 0, 127, 0.4);
+            }
+            to {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(255, 0, 127, 0.8);
+            }
+        }
+
+        /* MOBILE RESPONSIVENESS ADJUSTMENTS */
+        @media only screen and (max-width: 600px) {
+            .dj-button, .pt-button, .scan-button {
+                font-size: 12px;
+                padding: 8px 12px;
+                border-width: 3px;
+            }
+            /* Move positioning in slightly so they don't clip off mobile borders */
+            .dj-button { bottom: 10px; right: 10px; }
+            .pt-button { bottom: 10px; left: 10px; }
+            .scan-button { top: 10px; left: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -84,7 +132,11 @@
         <source src="rave.mp3" type="audio/mpeg">
     </audio>
 
-    <button class="pt-button" onclick="fixMyShoulder()"><i class="fa-solid fa-user-doctor"></i> 🏋️‍♂️ FIX MY SHOULDER</button>
+    <!-- NEW BUTTON (Top Left) -->
+    <button class="scan-button" onclick="loadThreeDScan()">💀 MOM'S ACCURATE 3D SCAN</button>
+
+    <!-- EXISTING BUTTONS (Bottom Left / Bottom Right) -->
+    <button class="pt-button" onclick="fixMyShoulder()">🏋️‍♂️ FIX MY SHOULDER</button>
     <button class="dj-button" onclick="toggleMusic()">🔊 START THE PARTY</button>
 
     <iframe id="content-frame" src="home.html" name="content-frame"></iframe>
@@ -108,11 +160,16 @@
             }
         }
 
-        // New function to switch your iframe content to the PT Tracker!
+        // Switches frame to the PT Shoulder Tracker!
         function fixMyShoulder() {
             var frame = document.getElementById("content-frame");
-            // Assuming your PT Tracker HTML file is saved as 'pt.html' in the same folder:
             frame.src = "pt.html"; 
+        }
+
+        // NEW FUNCTION: Switches frame to your interactive 3D Model!
+        function loadThreeDScan() {
+            var frame = document.getElementById("content-frame");
+            frame.src = "bodybuilder.html"; // Changed to match your file name!
         }
     </script>
 
