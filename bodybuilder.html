@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Peak Flex - Arnold Anatomy vs Average Human</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #eee;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #ui-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 15, 15, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.7);
+            border: 1px solid #ff007f;
+            max-width: 320px;
+            pointer-events: auto;
+        }
+        h1 {
+            font-size: 1.1rem;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #ff007f;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.5);
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+        }
+        .control-group {
+            margin-bottom: 12px;
+        }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: #bbb;
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: #ff007f;
+        }
+        .btn {
+            background: #222;
+            border: 1px solid #ff007f;
+            color: #ff007f;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            width: 100%;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+        .btn:hover {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+        }
+        .btn-active {
+            background: #ff007f !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.8);
+        }
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            border: 1px solid #333;
+            letter-spacing: 0.5px;
+        }
+    </style>
+    <!-- Include Three.js and OrbitControls via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div id="ui-container">
+        <h1>Peak Flex Studio</h1>
+        
+        <div class="control-group">
+            <label id="muscle-label">Arnold Muscle Mass: 100%</label>
+            <input type="range" id="muscle-slider" min="50" max="180" value="100">
+        </div>
+
+        <div class="control-group">
+            <label id="skinny-label">Skinny Guy Scale: 90%</label>
+            <input type="range" id="skinny-slider" min="50" max="120" value="90">
+        </div>
+
+        <hr style="border-color: #333; margin: 15px 0;">
+
+        <!-- SPECIAL UTILITY BUTTONS -->
+        <button class="btn" id="shoulder-btn">🔧 Fix My Shoulder</button>
+        <button class="btn" id="music-btn">🎵 Play Retro Synth Beat</button>
+        <button class="btn" id="micerave-btn" style="border-color: #00f0ff; color: #00f0ff;">⚡ Visit Micerave Website</button>
+    </div>
+
+    <div id="instructions">🖱️ Left Click + Drag to Orbit | Scroll to Zoom</div>
+
+    <script>
+        // --- 1. SETUP SCENE, CAMERA, & RENDERER ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050505);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 1.8, 7);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2; 
+
+        // --- 2. LIGHTING & ENVIRONMENT ---
+        const ambientLight = new THREE.AmbientLight(0x151515);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        mainLight.position.set(5, 8, 5);
+        mainLight.castShadow = true;
+        scene.add(mainLight);
+
+        // Moody Gym Neon Rimlights
+        const neonRed = new THREE.PointLight(0xff0055, 2, 10);
+        neonRed.position.set(-3, 2, 2);
+        scene.add(neonRed);
+
+        const neonBlue = new THREE.PointLight(0x00f0ff, 2, 10);
+        neonBlue.position.set(3, 2, 2);
+        scene.add(neonBlue);
+
+        // Ground stage
+        const floorGeo = new THREE.PlaneGeometry(30, 30);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 });
+        const floor = new THREE.Mesh(floorGeo, floorMat);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -1.5;
+        floor.receiveShadow = true;
+        scene.add(floor);
+
+        // --- 3. MATERIALS ---
+        const boneMat = new THREE.MeshStandardMaterial({ color: 0xe8e2ce, roughness: 0.7 });
+        const muscleMat = new THREE.MeshStandardMaterial({ color: 0xb31a3d, roughness: 0.4, metalness: 0.1 });
+        const skinMat = new THREE.MeshStandardMaterial({ color: 0xe5a387, roughness: 0.5 });
+
+        // Groups
+        const arnoldGroup = new THREE.Group();
+        arnoldGroup.position.set(-1.4, -0.2, 0);
+        scene.add(arnoldGroup);
+
+        const skinnyGroup = new THREE.Group();
+        skinnyGroup.position.set(1.4, -0.5, 0);
+        scene.add(skinnyGroup);
+
+        let muscles = [];
+        let shoulders = [];
+
+        // --- 4. BUILD THE ARNOLD ANATOMY ---
+        function createBone(w, h, d, x, y, z) {
+            const geo = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geo, boneMat);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = true;
+            arnoldGroup.add(mesh);
+            return mesh;
+        }
+
+        function createMuscle(radTop, radBot, height, x, y, z, rx=0, ry=0, rz=0) {
+            const geo = new THREE.CylinderGeometry(radTop, radBot, height, 10);
+            const mesh = new THREE.Mesh(geo, muscleMat);
+            mesh.position.set(x, y, z);
+            mesh.rotation.set(rx, ry, rz);
+            mesh.castShadow = true;
+            arnoldGroup.add(mesh);
+            muscles.push(mesh);
+            return mesh;
+        }
+
+        // Skeleton base
+        createBone(0.6, 0.15, 0.3, 0, -0.2, 0); // Pelvis
+        createBone(0.12, 1.1, 0.12, 0, 0.4, 0); // Spine
+        createBone(0.7, 0.5, 0.35, 0, 0.7, 0); // Ribcage
+
+        const skullGeo = new THREE.SphereGeometry(0.2, 16, 16);
+        const skull = new THREE.Mesh(skullGeo, boneMat);
+        skull.position.set(0, 1.3, 0);
+        arnoldGroup.add(skull);
+
+        // Biceps & Chest (Arnold Flex)
+        createMuscle(0.2, 0.32, 0.45, -0.25, 0.75, 0.18, 0, 0, Math.PI/2.5); // Left Pec
+        createMuscle(0.32, 0.2, 0.45, 0.25, 0.75, 0.18, 0, 0, -Math.PI/2.5); // Right Pec
+
+        // Abdominal stack
+        for (let i = 0; i < 3; i++) {
+            createMuscle(0.1, 0.1, 0.15, -0.09, 0.3 - (i*0.18), 0.12);
+            createMuscle(0.1, 0.1, 0.15, 0.09, 0.3 - (i*0.18), 0.12);
+        }
+
+        // Shoulders & Arms
+        const leftShoulder = createMuscle(0.25, 0.15, 0.35, -0.55, 0.95, 0, 0, 0, Math.PI/4);
+        const rightShoulder = createMuscle(0.25, 0.15, 0.35, 0.55, 0.95, 0, 0, 0, -Math.PI/4);
+        shoulders.push(leftShoulder, rightShoulder);
+
+        const leftBicep = createMuscle(0.26, 0.12, 0.42, -0.85, 1.05, 0, 0, 0, Math.PI/3);
+        const rightBicep = createMuscle(0.26, 0.12, 0.42, 0.85, 1.05, 0, 0, 0, -Math.PI/3);
+
+        const leftForearm = createMuscle(0.13, 0.08, 0.45, -1.0, 1.35, 0.15, Math.PI/4, 0, -Math.PI/6);
+        const rightForearm = createMuscle(0.13, 0.08, 0.45, 1.0, 1.35, 0.15, Math.PI/4, 0, Math.PI/6);
+
+        // Quads
+        createMuscle(0.22, 0.14, 0.65, -0.25, -0.6, 0.05);
+        createMuscle(0.22, 0.14, 0.65, 0.25, -0.6, 0.05);
+
+        // --- 5. BUILD SKINNY HUMAN (WITH SKIN) ---
+        function createSkinnyPart(geo, x, y, z, rx=0, ry=0, rz=0) {
+            const mesh = new THREE.Mesh(geo, skinMat);
+            mesh.position.set(x, y, z);
+            mesh.rotation.set(rx, ry, rz);
+            mesh.castShadow = true;
+            skinnyGroup.add(mesh);
+            return mesh;
+        }
+
+        const skinnyHead = createSkinnyPart(new THREE.SphereGeometry(0.15, 16, 16), 0, 1.1, 0, -0.1, -0.4, 0);
+        const skinnyTorso = createSkinnyPart(new THREE.CylinderGeometry(0.15, 0.12, 0.8, 12), 0, 0.5, 0);
+        const skinnyLeftArm = createSkinnyPart(new THREE.CylinderGeometry(0.035, 0.03, 0.65, 8), -0.22, 0.5, 0, 0, 0, 0.1);
+        const skinnyRightArm = createSkinnyPart(new THREE.CylinderGeometry(0.035, 0.03, 0.65, 8), 0.25, 0.7, 0.1, 0.5, 0, -Math.PI/4); // scratching head in awe
+        const skinnyLegL = createSkinnyPart(new THREE.CylinderGeometry(0.05, 0.035, 0.85, 8), -0.09, -0.3, 0);
+        const skinnyLegR = createSkinnyPart(new THREE.CylinderGeometry(0.05, 0.035, 0.85, 8), 0.09, -0.3, 0);
+
+
+        // --- 6. UI INTERACTION CONTROLS ---
+        const muscleSlider = document.getElementById('muscle-slider');
+        const muscleLabel = document.getElementById('muscle-label');
+        const skinnySlider = document.getElementById('skinny-slider');
+        const skinnyLabel = document.getElementById('skinny-label');
+        const shoulderBtn = document.getElementById('shoulder-btn');
+        const musicBtn = document.getElementById('music-btn');
+        const miceraveBtn = document.getElementById('micerave-btn');
+
+        // Resizing
+        muscleSlider.addEventListener('input', (e) => {
+            const scale = e.target.value / 100;
+            muscleLabel.innerText = `Arnold Muscle Mass: ${e.target.value}%`;
+            muscles.forEach(m => m.scale.set(scale, 1, scale));
+        });
+
+        skinnySlider.addEventListener('input', (e) => {
+            const scale = e.target.value / 100;
+            skinnyLabel.innerText = `Skinny Guy Scale: ${e.target.value}%`;
+            skinnyGroup.scale.set(scale, scale, scale);
+        });
+
+        // 🔧 FIX SHOULDER INTERACTION
+        let shouldersFixed = false;
+        shoulderBtn.addEventListener('click', () => {
+            shouldersFixed = !shouldersFixed;
+            shoulderBtn.classList.toggle('btn-active', shouldersFixed);
+            shoulderBtn.innerText = shouldersFixed ? "🔧 Shoulders Corrected!" : "🔧 Fix My Shoulder";
+        });
+
+        // 🎵 PROCEDURAL 80S AUDIO GENERATOR (No external files needed!)
+        let audioCtx = null;
+        let isPlaying = false;
+        let beatInterval = null;
+
+        function startSynthBeat() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            let step = 0;
+
+            beatInterval = setInterval(() => {
+                if (!audioCtx) return;
+                
+                // Synth Bass Kick
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                // Alternating classic 80s synth bass line notes
+                let freq = step % 4 === 0 ? 55 : (step % 4 === 2 ? 65.41 : 48.99); // A1, C2, G1
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.type = 'sawtooth';
+
+                // Synth Bass Envelope
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+
+                // Add a bright retro synth stab on step 0 and 4
+                if (step % 4 === 0) {
+                    let stabOsc = audioCtx.createOscillator();
+                    let stabGain = audioCtx.createGain();
+                    stabOsc.connect(stabGain);
+                    stabGain.connect(audioCtx.destination);
+                    
+                    stabOsc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3
+                    stabOsc.type = 'triangle';
+                    stabGain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    stabGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                    
+                    stabOsc.start();
+                    stabOsc.stop(audioCtx.currentTime + 0.6);
+                }
+
+                step++;
+            }, 300); // 100 BPM
+        }
+
+        function stopSynthBeat() {
+            if (beatInterval) clearInterval(beatInterval);
+            if (audioCtx) audioCtx.close();
+            audioCtx = null;
+        }
+
+        musicBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                startSynthBeat();
+                musicBtn.classList.add('btn-active');
+                musicBtn.innerText = "🎵 Stop Music";
+                isPlaying = true;
+            } else {
+                stopSynthBeat();
+                musicBtn.classList.remove('btn-active');
+                musicBtn.innerText = "🎵 Play Retro Synth Beat";
+                isPlaying = false;
+            }
+        });
+
+        // ⚡ MICERAVE WEBSITE & RAVE EASTER EGG
+        let raveMode = false;
+        miceraveBtn.addEventListener('click', () => {
+            // Open user's website in a new window
+            window.open('https://micerave.com', '_blank');
+
+            // Trigger visual easter egg!
+            raveMode = !raveMode;
+            if (raveMode) {
+                miceraveBtn.classList.add('btn-active');
+                miceraveBtn.innerText = "⚡ Rave Mode: ACTIVE!";
+            } else {
+                miceraveBtn.classList.remove('btn-active');
+                miceraveBtn.innerText = "⚡ Visit Micerave Website";
+                neonRed.color.setHex(0xff0055);
+                neonBlue.color.setHex(0x00f0ff);
+            }
+        });
+
+
+        // --- 7. ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Sway animations
+            arnoldGroup.position.y = -0.2 + Math.sin(time * 1.5) * 0.015;
+            skinnyGroup.position.y = -0.5 + Math.sin(time * 1.8) * 0.01;
+            skinnyHead.rotation.y = -0.4 + Math.sin(time * 2.5) * 0.15; // Nervous looking back/forth
+
+            // "Fix My Shoulder" angle adjustment
+            if (shouldersFixed) {
+                // Correct shoulder sockets and pull them back nicely
+                leftShoulder.rotation.z = THREE.MathUtils.lerp(leftShoulder.rotation.z, Math.PI/5, 0.1);
+                rightShoulder.rotation.z = THREE.MathUtils.lerp(rightShoulder.rotation.z, -Math.PI/5, 0.1);
+            } else {
+                // Default high-elbow bodybuilder flex angle
+                leftShoulder.rotation.z = THREE.MathUtils.lerp(leftShoulder.rotation.z, Math.PI/4, 0.1);
+                rightShoulder.rotation.z = THREE.MathUtils.lerp(rightShoulder.rotation.z, -Math.PI/4, 0.1);
+            }
+
+            // Rave Light Show Mode
+            if (raveMode) {
+                // Flash gym backlights wildly
+                neonRed.color.setHSL((time * 2) % 1.0, 1.0, 0.5);
+                neonBlue.color.setHSL(((time * 2) + 0.5) % 1.0, 1.0, 0.5);
+                scene.background.setHSL((time * 0.5) % 1.0, 0.3, 0.05); // dynamic background glow
+            } else {
+                scene.background.setHex(0x050505);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
